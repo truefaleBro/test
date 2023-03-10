@@ -1,0 +1,130 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <title>Vodadone</title>
+    <style>
+      body {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background: linear-gradient(135deg, #005bbb 0%, #fcd116 100%);
+        font-family: Arial, sans-serif;
+      }
+
+      .clock {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 50px;
+        background-color: #ffffff;
+        color: #005bbb;
+        font-size: 24px;
+        font-weight: bold;
+        text-align: center;
+      }
+
+      .clock span {
+        margin-right: 10px;
+      }
+
+      .date {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 50px;
+        background-color: #ffffff;
+        color: #005bbb;
+        font-size: 18px;
+        font-weight: bold;
+        text-align: center;
+        margin-top: 10px;
+      }
+
+      #dateContainer {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-height: 250px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="clock">
+      <span>Поточна дата та час:</span>
+      <span id="currentDateTime"></span>
+    </div>
+    <div id="dateContainer">
+      <div class="date" id="today"></div>
+      <div class="date" id="twoDaysAgo"></div>
+      <div class="date" id="fiveDaysAgo"></div>
+      <div class="date" id="sixDaysAgo"></div>
+    </div>
+    <script>
+      // Отримуємо поточну дату та час
+      function getCurrentDateTime() {
+        let dateTime = new Date();
+        let options = {
+          weekday: "long",
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+          hour: "numeric",
+          minute: "numeric",
+          second: "numeric"
+        };
+        let formattedDateTime = dateTime.toLocaleDateString("uk-UA", options);
+        return formattedDateTime;
+      }
+
+      // Вставляємо поточну дату та час у годинник
+      function updateClock() {
+        let currentDateTimeElement = document.getElementById("currentDateTime");
+        let currentDateTime = getCurrentDateTime();
+        currentDateTimeElement.innerHTML = currentDateTime;
+      }
+
+      // Оновлюємо годинник кожну секунду
+      setInterval(updateClock, 1000);
+
+      // Функція для отримання дати, яка віддалена від поточної на певну кількість днів
+      function getDateDaysAgo(daysAgo) {
+        let date = new Date();
+        date.setDate(date.getDate() - daysAgo);
+        let options = {
+          weekday: "long",
+          year: "numeric",
+          month: "long",
+          day: "numeric"
+        };
+        let formattedDate = date.toLocaleDateString("uk-UA", options);
+        return formattedDate;
+      }
+
+      // Функції для відображення дат в елементах з id `today`, `twoDaysAgo`, `fiveDaysAgo` та `sixDaysAgo`
+      function updateDates() {
+        let todayElement = document.getElementById("today");
+        let twoDaysAgoElement = document.getElementById("twoDaysAgo");
+        let fiveDaysAgoElement = document.getElementById("fiveDaysAgo");
+        let sixDaysAgoElement = document.getElementById("sixDaysAgo");
+
+        let today = getDateDaysAgo(0);
+        let twoDaysAgo = getDateDaysAgo(2);
+        let fiveDaysAgo = getDateDaysAgo(5);
+        let sixDaysAgo = getDateDaysAgo(6);
+
+        todayElement.innerHTML = today;
+        twoDaysAgoElement.innerHTML = twoDaysAgo;
+        fiveDaysAgoElement.innerHTML = fiveDaysAgo;
+        sixDaysAgoElement.innerHTML = sixDaysAgo;
+      }
+
+      // Оновлюємо дати один раз на початку
+      updateDates();
+    </script>
+  </body>
+</html>
