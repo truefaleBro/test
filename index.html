@@ -62,7 +62,7 @@
       <div class="date" id="today"></div>
       <div class="date" id="twoDaysAgo"></div>
       <div class="date" id="fiveDaysAgo"></div>
-      <div class="date" id="sixDaysAgo"></div>
+      <div class="date" id="sevenDaysAgo"></div>
     </div>
     <script>
       // Отримуємо поточну дату та час
@@ -105,17 +105,17 @@
         return formattedDate;
       }
 
-      // Функції для відображення дат в елементах з id `today`, `twoDaysAgo`, `fiveDaysAgo` та `sixDaysAgo`
+      // Функції для відображення дат в елементах з id `today`, `twoDaysAgo`, `fiveDaysAgo` та `sevenDaysAgo`
       function updateDates() {
         let todayElement = document.getElementById("today");
         let twoDaysAgoElement = document.getElementById("twoDaysAgo");
         let fiveDaysAgoElement = document.getElementById("fiveDaysAgo");
-        let sixDaysAgoElement = document.getElementById("sixDaysAgo");
+        let sixDaysAgoElement = document.getElementById("sevenDaysAgo");
 
         let today = getDateDaysAgo(0);
         let twoDaysAgo = getDateDaysAgo(2);
         let fiveDaysAgo = getDateDaysAgo(5);
-        let sixDaysAgo = getDateDaysAgo(6);
+        let sixDaysAgo = getDateDaysAgo(7);
 
         todayElement.innerHTML = today;
         twoDaysAgoElement.innerHTML = twoDaysAgo;
