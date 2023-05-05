@@ -51,29 +51,22 @@
 	</div>
 
 	<script>
-		var today = new Date();
-		var twoDaysAgo = new Date();
-		twoDaysAgo.setDate(today.getDate() - 2);
-		var fiveDaysAgo = new Date();
-		fiveDaysAgo.setDate(today.getDate() - 5);
-		var sixDaysAgo = new Date();
-		sixDaysAgo.setDate(today.getDate() - 6);
+		// Замініть YOUR_API_KEY на Ваш ключ API з OpenWeatherMap
+const apiKey = "4a5be84e93e36109e763d4dcc644b5d4";
+// Замініть YOUR_CITY на Ваше місто
+const city = "Vinnytsia";
 
-        fetch('https://api.openweathermap.org/data/2.5/weather?q=Vinnytsia&appid=4a5be84e93e36109e763d4dcc644b5d4&units=metric')
-        .then(response => response.json())
-        .then(data => {
-            var weather = data.weather[0].description;
-            document.getElementById("weather").innerHTML = weather;
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-
-		document.getElementById("today").innerHTML = today.toLocaleDateString('uk-UA');
-		document.getElementById("twoDaysAgo").innerHTML = twoDaysAgo.toLocaleDateString('uk-UA');
-		document.getElementById("fiveDaysAgo").innerHTML = fiveDaysAgo.toLocaleDateString('uk-UA');
-		document.getElementById("sixDaysAgo").innerHTML = sixDaysAgo.toLocaleDateString('uk-UA');
-        
+// Отримуємо дані про погоду з API
+fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`)
+  .then(response => response.json())
+  .then(data => {
+    // Отримуємо температуру з отриманих даних
+    const temperature = data.main.temp;
+    // Знаходимо елемент на сторінці з ідентифікатором "weather"
+    const weatherElement = document.getElementById("weather");
+    // Виводимо температуру на сторінку
+    weatherElement.innerHTML = `Temperature: ${temperature} &deg;C`;
+  });
 	</script>
 </body>
 </html>
