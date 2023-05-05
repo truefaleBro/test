@@ -59,7 +59,7 @@
 		var sixDaysAgo = new Date();
 		sixDaysAgo.setDate(today.getDate() - 6);
 
-        fetch('https://api.openweathermap.org/data/2.5/weather?q=Vinnytsia&appid=YOUR_API_KEY&units=metric')
+        fetch('https://api.openweathermap.org/data/2.5/weather?q=Vinnytsia&appid=4a5be84e93e36109e763d4dcc644b5d4&units=metric')
         .then(response => response.json())
         .then(data => {
             var weather = data.weather[0].description;
