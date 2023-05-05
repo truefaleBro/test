@@ -1,130 +1,79 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>vododon</title>
-    <style>
-      body {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        background: linear-gradient(135deg, #005bbb 0%, #fcd116 100%);
-        font-family: Arial, sans-serif;
-      }
+<head>
+	<title>Динамічні дати та погода у Вінниці</title>
+	<style type="text/css">
+		body {
+			background-color: #00529B;
+			font-family: Arial, sans-serif;
+			color: white;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			height: 100vh;
+		}
+		h1 {
+			color: #FFD600;
+			text-align: center;
+			text-shadow: 2px 2px #000000;
+			margin-top: 50px;
+		}
+		p {
+			font-size: 18px;
+			margin-left: 20px;
+			margin-top: 20px;
+		}
+		span {
+			color: #FFD600;
+			font-weight: bold;
+			font-size: 24px;
+			margin-left: 10px;
+			text-shadow: 1px 1px #000000;
+		}
+		.frame {
+			border: 10px solid #FFD600;
+			padding: 50px;
+			border-radius: 100px / 50px;
+			background-color: #00529B;
+			box-shadow: inset 5px 5px 10px rgba(0,0,0,0.5);
+		}
+	</style>
+</head>
+<body>
+	<div class="frame">
+		<h1>Динамічні дати та погода у Вінниці</h1>
+		<p>Сьогоднішня дата: <span id="today"></span></p>
+		<p>Дві дати тому: <span id="twoDaysAgo"></span></p>
+		<p>П'ять днів тому: <span id="fiveDaysAgo"></span></p>
+		<p>Шість днів тому: <span id="sixDaysAgo"></span></p>
+        <p>Погода у Вінниці зараз: <span id="weather"></span></p>
+	</div>
 
-      .clock {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-        height: 50px;
-        background-color: #ffffff;
-        color: #005bbb;
-        font-size: 24px;
-        font-weight: bold;
-        text-align: center;
-      }
+	<script>
+		var today = new Date();
+		var twoDaysAgo = new Date();
+		twoDaysAgo.setDate(today.getDate() - 2);
+		var fiveDaysAgo = new Date();
+		fiveDaysAgo.setDate(today.getDate() - 5);
+		var sixDaysAgo = new Date();
+		sixDaysAgo.setDate(today.getDate() - 6);
 
-      .clock span {
-        margin-right: 10px;
-      }
+        fetch('https://api.openweathermap.org/data/2.5/weather?q=Vinnytsia&appid=YOUR_API_KEY&units=metric')
+        .then(response => response.json())
+        .then(data => {
+            var weather = data.weather[0].description;
+            document.getElementById("weather").innerHTML = weather;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
 
-      .date {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-        height: 50px;
-        background-color: #ffffff;
-        color: #005bbb;
-        font-size: 18px;
-        font-weight: bold;
-        text-align: center;
-        margin-top: 10px;
-      }
-
-      #dateContainer {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        min-height: 250px;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="clock">
-      <span>Поточна дата та час:</span>
-      <span id="currentDateTime"></span>
-    </div>
-    <div id="dateContainer">
-      <div class="date" id="today"></div>
-      <div class="date" id="twoDaysAgo"></div>
-      <div class="date" id="fiveDaysAgo"></div>
-      <div class="date" id="sevenDaysAgo"></div>
-    </div>
-    <script>
-      // Отримуємо поточну дату та час
-      function getCurrentDateTime() {
-        let dateTime = new Date();
-        let options = {
-          weekday: "long",
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-          hour: "numeric",
-          minute: "numeric",
-          second: "numeric"
-        };
-        let formattedDateTime = dateTime.toLocaleDateString("uk-UA", options);
-        return formattedDateTime;
-      }
-
-      // Вставляємо поточну дату та час у годинник
-      function updateClock() {
-        let currentDateTimeElement = document.getElementById("currentDateTime");
-        let currentDateTime = getCurrentDateTime();
-        currentDateTimeElement.innerHTML = currentDateTime;
-      }
-
-      // Оновлюємо годинник кожну секунду
-      setInterval(updateClock, 1000);
-
-      // Функція для отримання дати, яка віддалена від поточної на певну кількість днів
-      function getDateDaysAgo(daysAgo) {
-        let date = new Date();
-        date.setDate(date.getDate() - daysAgo);
-        let options = {
-          weekday: "long",
-          year: "numeric",
-          month: "long",
-          day: "numeric"
-        };
-        let formattedDate = date.toLocaleDateString("uk-UA", options);
-        return formattedDate;
-      }
-
-      // Функції для відображення дат в елементах з id `today`, `twoDaysAgo`, `fiveDaysAgo` та `sevenDaysAgo`
-      function updateDates() {
-        let todayElement = document.getElementById("today");
-        let twoDaysAgoElement = document.getElementById("twoDaysAgo");
-        let fiveDaysAgoElement = document.getElementById("fiveDaysAgo");
-        let sixDaysAgoElement = document.getElementById("sevenDaysAgo");
-
-        let today = getDateDaysAgo(0);
-        let twoDaysAgo = getDateDaysAgo(2);
-        let fiveDaysAgo = getDateDaysAgo(5);
-        let sixDaysAgo = getDateDaysAgo(7);
-
-        todayElement.innerHTML = today;
-        twoDaysAgoElement.innerHTML = twoDaysAgo;
-        fiveDaysAgoElement.innerHTML = fiveDaysAgo;
-        sixDaysAgoElement.innerHTML = sixDaysAgo;
-      }
-
-      // Оновлюємо дати один раз на початку
-      updateDates();
-    </script>
-  </body>
+		document.getElementById("today").innerHTML = today.toLocaleDateString('uk-UA');
+		document.getElementById("twoDaysAgo").innerHTML = twoDaysAgo.toLocaleDateString('uk-UA');
+		document.getElementById("fiveDaysAgo").innerHTML = fiveDaysAgo.toLocaleDateString('uk-UA');
+		document.getElementById("sixDaysAgo").innerHTML = sixDaysAgo.toLocaleDateString('uk-UA');
+        
+	</script>
+</body>
 </html>
