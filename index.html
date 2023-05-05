@@ -59,21 +59,12 @@
 		var sixDaysAgo = new Date();
 		sixDaysAgo.setDate(today.getDate() - 6);
 
-        		// Замініть YOUR_API_KEY на Ваш ключ API з OpenWeatherMap
-const apiKey = "4a5be84e93e36109e763d4dcc644b5d4";
-// Замініть YOUR_CITY на Ваше місто
-const city = "Vinnytsia";
-
-// Отримуємо дані про погоду з API
-fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`)
-  .then(response => response.json())
-  .then(data => {
-    // Отримуємо температуру з отриманих даних
-    const temperature = data.main.temp;
-    // Знаходимо елемент на сторінці з ідентифікатором "weather"
-    const weatherElement = document.getElementById("weather");
-    // Виводимо температуру на сторінку
-    weatherElement.innerHTML = `Temperature: ${temperature} &deg;C`;
+        fetch('https://api.openweathermap.org/data/2.5/weather?q=Vinnytsia&appid=YOUR_API_KEY&units=metric')
+        .then(response => response.json())
+        .then(data => {
+            var weather = data.weather[0].description;
+            document.getElementById("weather").innerHTML = weather;
+        })
         .catch(error => {
             console.error('Error:', error);
         });
